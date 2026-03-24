@@ -5,8 +5,8 @@ export class Employee {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
-    name: string;
+    @Column({ default: '' })
+    fullName: string;
 
     @Column({ nullable: true, unique: true })
     email: string;
@@ -16,6 +16,15 @@ export class Employee {
 
     @Column({ nullable: true })
     role: string;
+
+    @Column({ default: true })
+    active: boolean;
+
+    @Column({ nullable: true })
+    commissionType: string;
+
+    @Column('decimal', { precision: 10, scale: 2, nullable: true })
+    commissionValue: number;
 
     @CreateDateColumn()
     createdAt: Date;

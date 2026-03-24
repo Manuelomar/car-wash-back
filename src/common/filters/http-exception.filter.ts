@@ -14,8 +14,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const response = ctx.getResponse<Response>();
 
         let status = HttpStatus.INTERNAL_SERVER_ERROR;
-        let message = 'Internal server error';
-        let errors: string[] = ['An unexpected error occurred'];
+        let message = 'Error interno del servidor';
+        let errors: string[] = ['Ocurrió un error inesperado'];
 
         if (exception instanceof HttpException) {
             // NestJS built-in exceptions (NotFoundException, BadRequestException, etc.)
@@ -38,29 +38,29 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 status = HttpStatus.CONFLICT;
                 // Extract the field name from the detail message if available
                 const detail: string = (exception as any).detail ?? '';
-                const field = detail.match(/Key \((.+?)\)=/)?.[1] ?? 'field';
-                message = `A record with this ${field} already exists`;
+                const field = detail.match(/Key \((.+?)\)=/)?.[1] ?? 'campo';
+                message = `Ya existe un registro con este ${field}`;
                 errors = [message];
             } else if (pgCode === PG_FOREIGN_KEY_VIOLATION) {
                 status = HttpStatus.BAD_REQUEST;
-                message = 'Related resource not found';
+                message = 'Recurso relacionado no encontrado';
                 errors = [message];
             } else if (pgCode === PG_NOT_NULL_VIOLATION) {
                 status = HttpStatus.BAD_REQUEST;
-                const column: string = (exception as any).column ?? 'field';
-                message = `The field "${column}" is required`;
+                const column: string = (exception as any).column ?? 'campo';
+                message = `El campo "${column}" es requerido`;
                 errors = [message];
             } else {
                 // Generic DB error — log internally but return a safe message
                 console.error('[DB Error]', exception.message);
-                message = 'Database error';
-                errors = ['An error occurred while processing your request'];
+                message = 'Error de base de datos';
+                errors = ['Ocurrió un error al procesar su solicitud'];
             }
         } else if (exception instanceof Error) {
             // Other unexpected errors — don't expose internals
             console.error('[Unhandled Error]', exception);
-            message = 'Internal server error';
-            errors = ['An unexpected error occurred'];
+            message = 'Error interno del servidor';
+            errors = ['Ocurrió un error inesperado'];
         }
 
         response.status(status).json({

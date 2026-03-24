@@ -6,13 +6,16 @@ export class Vehicle {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column({ default: 'Car' })
+    type: string;
+
     @Column()
     brand: string;
 
     @Column()
     model: string;
 
-    @Column()
+    @Column({ nullable: true })
     year: string;
 
     @Column({ unique: true })

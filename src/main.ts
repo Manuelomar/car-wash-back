@@ -17,9 +17,16 @@ async function bootstrap() {
     .setTitle('Car Wash API')
     .setDescription('The Car Wash API documentation')
     .setVersion('1.0')
+    .addBearerAuth()
+    .addSecurityRequirements('bearer')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, documentFactory);
+  SwaggerModule.setup('api/docs', app, documentFactory, {
+    swaggerOptions: {
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
 
 
   await app.listen(process.env.PORT ?? 3001);

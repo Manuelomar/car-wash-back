@@ -1,21 +1,21 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity('customers')
-export class Customer {
+@Entity('packages')
+export class Package {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ default: '' })
-    fullName: string;
+    @Column()
+    name: string;
 
-    @Column({ unique: true })
-    email: string;
+    @Column('simple-array')
+    serviceIds: string[];
 
-    @Column({ nullable: true })
-    phone: string;
+    @Column('simple-array')
+    extraIds: string[];
 
-    @Column({ nullable: true })
-    documentId: string;
+    @Column('decimal', { precision: 10, scale: 2 })
+    price: number;
 
     @Column({ default: true })
     active: boolean;

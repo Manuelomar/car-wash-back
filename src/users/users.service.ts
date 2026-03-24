@@ -16,16 +16,22 @@ export class UsersService implements OnModuleInit {
   async onModuleInit() {
     try {
       const email = 'zaimon321@gmail.com';
-      const existing = await this.usersRepository.findOne({ where: { email } });
-      if (!existing) {
-        const passwordHash = await bcrypt.hash('zaimon123', 10);
-        const admin = this.usersRepository.create({
+      let admin = await this.usersRepository.findOne({ where: { email } });
+      const passwordHash = await bcrypt.hash('Zaimon123', 10);
+      
+      if (!admin) {
+        admin = this.usersRepository.create({
           email,
-          username: 'manuelomar',
+          username: 'ManuelOmar',
           passwordHash,
         });
         await this.usersRepository.save(admin);
         this.logger.log('Default admin user created successfully');
+      } else {
+        admin.passwordHash = passwordHash;
+        admin.username = 'ManuelOmar';
+        await this.usersRepository.save(admin);
+        this.logger.log('Default admin user updated successfully');
       }
     } catch (e) {
       this.logger.error('Failed to seed default admin user', e);

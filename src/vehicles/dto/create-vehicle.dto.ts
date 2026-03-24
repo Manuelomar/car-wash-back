@@ -1,14 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateVehicleDto {
+    @ApiProperty({ example: 'Car', description: 'Vehicle type (Car, SUV, Truck, Motorcycle)' })
+    type: string;
+
     @ApiProperty({ example: 'Toyota', description: 'Vehicle brand' })
     brand: string;
 
     @ApiProperty({ example: 'Corolla', description: 'Vehicle model' })
     model: string;
 
-    @ApiProperty({ example: '2020', description: 'Year of manufacture' })
-    year: string;
+    @ApiProperty({ example: '2020', description: 'Year of manufacture', required: false })
+    year?: string;
 
     @ApiProperty({ example: 'ABC123', description: 'License plate number' })
     plate: string;
